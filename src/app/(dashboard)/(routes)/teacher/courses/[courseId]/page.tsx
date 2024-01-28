@@ -10,9 +10,9 @@ import ImageForm from "./_components/image-form";
 const CourseIdPage = async ({
     params,
 }: {
-    params: {
-        courseId: string;
-    };
+        params: {
+            courseId: string;
+        };
 }) => {
     const { userId } = auth();
 
@@ -23,6 +23,12 @@ const CourseIdPage = async ({
     const course = await db.course.findUnique({
         where: {
             id: params.courseId,
+        },
+    });
+
+    const categories = await db.category.findMany({
+        orderBy: {
+            name: "asc",
         },
     });
 
@@ -40,7 +46,6 @@ const CourseIdPage = async ({
 
     const totalFields = requiredFields.length;
     const completedFields = requiredFields.filter(Boolean).length;
-
 
     const completionText = `(${completedFields}/${totalFields})`;
 
@@ -61,10 +66,11 @@ const CourseIdPage = async ({
                     <TitleForm initialData={course} courseId={course.id} />
                     <DescriptionForm initialData={course} courseId={course.id} />
                     <ImageForm initialData={course} courseId={course.id} />
-                </div>
-            </div>
-        </div>
-    );
+                  <ImageForm initialData={course} courseId={course.id} />
+              </div>
+          </div>
+      </div>
+  );
 };
 
 export default CourseIdPage;
