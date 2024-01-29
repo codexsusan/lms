@@ -37,6 +37,8 @@ export async function POST(req: Request, { params }: Props) {
       },
     });
 
+    console.log(lastChapter);
+
     const newPosition = lastChapter ? lastChapter.position + 1 : 1;
 
     const chapter = await db.chapter.create({
