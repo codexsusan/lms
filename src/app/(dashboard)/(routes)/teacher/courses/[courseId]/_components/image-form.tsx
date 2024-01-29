@@ -39,7 +39,7 @@ const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
     };
 
     const toggleEdit = () => {
-        setIsEditing(!isEditing);
+        setIsEditing((current) => !current);
     };
     return (
         <div className="mt-6 border bg-slate-100 rounded-md p-4">
