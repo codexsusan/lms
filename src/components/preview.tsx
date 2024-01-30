@@ -2,21 +2,19 @@
 
 import dynamic from "next/dynamic";
 import { useMemo } from "react";
-import "react-quill/dist/quill.snow.css";
+import "react-quill/dist/quill.bubble.css";
 
 interface PreviewProps {
-    onChange: (value: string) => void;
     value: string;
 }
 
-const Preview = ({ value, onChange }: PreviewProps) => {
-    const ReactQuill = useMemo(() => dynamic(() => import("react-quill"), { ssr: false }), []);
-
-    return (
-        <div className="bg-white">
-            <ReactQuill theme="snow" value={value} onChange={onChange} />
-        </div>
+const Preview = ({ value }: PreviewProps) => {
+    const ReactQuill = useMemo(
+        () => dynamic(() => import("react-quill"), { ssr: false }),
+        []
     );
+
+    return <ReactQuill theme="bubble" value={value} readOnly />;
 };
 
 export default Preview;
