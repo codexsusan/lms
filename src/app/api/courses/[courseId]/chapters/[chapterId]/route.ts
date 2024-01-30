@@ -61,7 +61,31 @@ export async function DELETE(REQ: Request, { params }: Props) {
       }
     }
 
-    // const;
+    const deletedChapter = await db.chapter.delete({
+      where: {
+        id: chapterId,
+      },
+    });
+
+    const publishedChaptersInCourse = await db.chapter.findMany({
+      where: {
+        courseId,
+        isPublished: true,
+      },
+    });
+
+    if (!publishedChaptersInCourse.length) {
+      await db.course.update({
+        where: {
+          id: courseId,
+        },
+        data: {
+          isPublished: false,
+        },
+      });
+    }
+
+    return NextResponse.json(deletedChapter);
   } catch (error) {
     console.log("[CHAPTER_ID]", error);
     return new NextResponse("Internal Server Error", { status: 500 });
@@ -95,7 +119,6 @@ export async function PATCH(req: Request, { params }: Props) {
       },
     });
 
-    // TODO: Handle Video Upload
     if (values.videoUrl) {
       const existingMuxData = await db.muxData.findFirst({
         where: {

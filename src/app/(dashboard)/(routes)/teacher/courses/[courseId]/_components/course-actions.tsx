@@ -7,32 +7,33 @@ import { Trash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useConfettiStore } from "@/../hooks/use-confetti-store";
 
-interface ChapterActionsProps {
+interface CourseActionsProps {
     disabled: boolean;
     courseId: string;
-    chapterId: string;
     isPublished: boolean;
 }
 
-const ChapterActions = ({
+const CourseActions = ({
     disabled,
     courseId,
-    chapterId,
     isPublished,
-}: ChapterActionsProps) => {
+}: CourseActionsProps) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const router = useRouter();
+    const confetti = useConfettiStore();
 
     const togglePublish = async () => {
         try {
             setIsLoading(true);
             if (isPublished) {
-                await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}/unpublish`);
-                toast.success("Chapter Unpublished.");
+                await axios.patch(`/api/courses/${courseId}/unpublish`);
+                toast.success("Course Unpublished.");
             } else {
-                await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}/publish`);
-                toast.success("Chapter Published.");
+                await axios.patch(`/api/courses/${courseId}/publish`);
+                toast.success("Course Published.");
+                confetti.onOpen();
             }
             router.refresh();
         } catch {
@@ -46,9 +47,9 @@ const ChapterActions = ({
     const onDelete = async () => {
         try {
             setIsLoading(true);
-            await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}`);
-            toast.success("Chapter deleted.");
-            router.push(`/teacher/courses/${courseId}`);
+            await axios.delete(`/api/courses/${courseId}`);
+            toast.success("Course deleted.");
+            router.push(`/teacher/courses`);
             router.refresh();
         } catch {
             toast.error("Something went wrong.");
@@ -76,4 +77,4 @@ const ChapterActions = ({
     );
 };
 
-export default ChapterActions;
+export default CourseActions;
