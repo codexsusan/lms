@@ -90,14 +90,14 @@ const ChapterVideoForm = ({
                         }}
                     />
                     <div className="text-xs text-muted-foreground mt-4">
-                        Upload this chapter&apos;s video
+                        Upload this chapter &apos; s video
                     </div>
                 </div>
             )}
             {initialData.videoUrl && !isEditing && (
                 <div className="text-xs text-muted-foreground mt-2">
                     Videos can take few minutes to process. Refresh the page if video
-                    doesn't appear
+                    doesn&apos;t appear
                 </div>
             )}
         </div>
